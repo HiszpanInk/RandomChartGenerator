@@ -3,24 +3,32 @@ import matplotlib.pyplot as plt
 import random
 from configuration import listOfCountries
 
+from configuration import ramdomDataMax
+
 def randomPieChart(title):
     recordsNum = random.randint(1, 5)
     selectedCountries = []
     print(title, "\n")
-    selectedCountries = random.sample(listOfCountries, recordsNum)
+    selectedCountries = listOfCountries
+    random.shuffle(selectedCountries)
+    selectedCountries = selectedCountries[:recordsNum]
+    data = []
     for y in range(0, recordsNum):
         print(selectedCountries[y])  
-
-    """
-    df = pd.DataFrame({'mass': [0.330, 4.87 , 5.97],
-                   'radius': [2439.7, 6051.8, 6378.1]},
-                  index=['Mercury', 'Venus', 'Earth'])
-    plot = df.plot.pie(y='mass', figsize=(5, 5))
-    """
-
+        newDataRecord = random.random() + 1
+        data.append(newDataRecord)      
+    print(selectedCountries)
+    print(data)
+    
+    
+    df = pd.DataFrame({title: data},
+                    index=selectedCountries)
+    plot = df.plot.pie(y=title, figsize=(5, 5))
+    fig = plot.get_figure()
+    fig.savefig("myplot.png")
+    
 
 def __main__():
-    print("gówno")
     while True:
         print("""
         RandomChartGenerator
@@ -40,6 +48,8 @@ def __main__():
                     randomPieChart(title)
                 if menuChoice == 2137:
                     print("I am sorry, I didn't add this option yet, please be patient")
+                    #plan na ten: bierzemy datę, generujemy liczbę, w dni tygodnia do soboty włącznie zwiększa się statystyka, niedzielę i poniedziałek - zmniejsza
+                    #jeszcze można dodać generowanie na podstawie liczby wpisanej przez użytkownika jako dzisiejsza
             else:
                 print("There is no such option you know")
         else:
