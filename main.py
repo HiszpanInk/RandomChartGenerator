@@ -6,24 +6,64 @@ from configuration import listOfCountries
 from configuration import ramdomDataMax
 
 def randomPieChart(title):
-    recordsNum = random.randint(1, 5)
-    selectedCountries = []
+    
+    selectedIndexes = []
+
+    indexDataChoice = input("If you want to randomly select countries to be indexes - press 1 and enter, if you want manually enter indexes press 2 and enter: ")
+    if str.isdigit(indexDataChoice):
+        indexDataChoice = int(indexDataChoice)
+        if indexDataChoice == 1:
+            randomisedCountryNumberChoice = input("If you want to number of countries to be randomised enter 1, if you want the specify how many countries you want to have in the graph - enter 2: ")
+            if str.isdigit(randomisedCountryNumberChoice):
+                randomisedCountryNumberChoice = int(randomisedCountryNumberChoice)
+                if randomisedCountryNumberChoice == 1:
+                    print("przypisanie")
+                    recordsNum = random.randint(1, len(listOfCountries))
+                    selectedIndexes = listOfCountries
+                    random.shuffle(selectedIndexes)
+                    selectedIndexes = selectedIndexes[:recordsNum]
+                elif randomisedCountryNumberChoice == 2:
+                    isNumOfCountriesSet = False
+                    while isNumOfCountriesSet == False:
+                        recordsNumInput = input("Enter number of countries you want to chose: ")
+                        if str.isdigit(recordsNumInput):
+                            recordsNum = int(recordsNumInput)
+                            selectedIndexes = listOfCountries
+                            random.shuffle(selectedIndexes)
+                            selectedIndexes = selectedIndexes[:recordsNum]
+                            isNumOfCountriesSet = True
+                        else:
+                            print("Invalid input")
+                else:
+                    print("There is no such option you know")
+            else:
+                print("There is no such option you know")
+        elif indexDataChoice == 2:
+            indexDataInputChoice = ""
+            print('When you are done entering data write "Done"')
+            while indexDataInputChoice != "Done":
+                indexDataInputChoice = input('Enter your custom index or enter "Done": ')
+                if(indexDataInputChoice != "Done"):
+                    selectedIndexes.append(indexDataInputChoice)
+            recordsNum = len(selectedIndexes)
+        else:
+            print("There is no such option you know")
+    else:
+        print("There is no such option you know")
+
     print(title, "\n")
-    selectedCountries = listOfCountries
-    random.shuffle(selectedCountries)
-    selectedCountries = selectedCountries[:recordsNum]
+    
     data = []
     for y in range(0, recordsNum):
-        print(selectedCountries[y])  
+        print(selectedIndexes[y])  
         newDataRecord = random.random() + 1
         data.append(newDataRecord)      
-    print(selectedCountries)
+    print(selectedIndexes)
     print(data)
     
     
-    df = pd.DataFrame({title: data},
-                    index=selectedCountries)
-    plot = df.plot.pie(y=title, figsize=(5, 5))
+    df = pd.DataFrame({title: data})
+    plot = df.plot.pie(y=title, figsize=(11, 11), labels=selectedIndexes, fontsize=12, legend=False, autopct='%1.1f%%')
     fig = plot.get_figure()
     fig.savefig("myplot.png")
     
@@ -35,6 +75,10 @@ def __main__():
         Menu
         0 - Exit Program
         1 - Generate random pie chart
+        #to be done
+        2 - 
+        3 - 
+        4 - generate random scatter plot
         2137 - Generate random COVID stats
         """)
         menuChoice = input("Select positon from menu: ")
