@@ -1,10 +1,14 @@
+from configuration import listOfCountries
+from configuration import listOfColors
+from configuration import randomDataMax
+from configuration import randomDataMin
 import pandas as pd
 import matplotlib.pyplot as plt
 import random
-from PIL import Image 
-from configuration import listOfCountries
-
-from configuration import ramdomDataMax
+import numpy as np
+from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from PIL import Image
 #funkcja do generowania losowych wykresów kołowych
 
 def isfloat(value):
@@ -152,8 +156,22 @@ def randomBarChart(title):
     print(selectedIndexes)
     print(data)
     
-    
-    df = pd.DataFrame({title: data}, index=selectedIndexes)
+    #color selection
+    colorsToUse = []
+    for y in range(0, recordsNum):
+        colorsToUse.append(listOfColors[y])
+    random.shuffle(colorsToUse)
+
+    sizeDiffrence = len(colorsToUse) - len(selectedIndexes)
+    if(sizeDiffrence < 0):
+        colorsToUse.append(colorsToUse[0:(sizeDiffrence + 1)])
+    elif(sizeDiffrence > 0):
+        colorsToUse = colorsToUse[0:(len(colorsToUse - sizeDiffrence + 1))]
+    random.shuffle(colorsToUse)
+    print(colorsToUse)
+
+
+    df = pd.DataFrame({title: data}, index=selectedIndexes, color = colorsToUse)
     fig = df.plot.bar(rot=0)
     fig.figure.savefig("myplot.png")
 
@@ -168,11 +186,12 @@ def __main__():
         0 - Exit Program
         1 - Generate random pie chart
         #in production
-        2 - Generate random bar chart
+        2 - Generate random bar chart (with one bar per index)
         #to be done
-        3 - 
+        3 - Generate random bar chart (with more than one bar per index)
         4 - generate random scatter plot
-        2137 - Generate random COVID stats
+        2137 - Generate random COVID stats 
+        2138 - Generate random voting poll
         """)
         menuChoice = input("Select positon from menu: ")
         if str.isdigit(menuChoice):
