@@ -12,7 +12,12 @@ listOfCountries = [
     "South Africa",
     "United States of America",
     "Japan",
-    "Yemen"
+    "Yemen",
+    "Serbia",
+    "Bośnia i Hercegowina",
+    "Słowenia",
+    "Germany",
+    "China"
 ]
 
 #list of colors to randomise and use in random bar plots

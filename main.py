@@ -87,7 +87,7 @@ def randomPieChart(title):
 #funkcja do generowania losowych wykresów słupkowych
 def randomBarChart(title):
     selectedIndexes = []
-
+    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     indexDataChoice = input("If you want to randomly select countries to be indexes - press 1 and enter, if you want manually enter indexes press 2 and enter: ")
     if str.isdigit(indexDataChoice):
         indexDataChoice = int(indexDataChoice)
@@ -157,22 +157,11 @@ def randomBarChart(title):
     print(data)
     
     #color selection
-    colorsToUse = []
-    for y in range(0, recordsNum):
-        colorsToUse.append(listOfColors[y])
-    random.shuffle(colorsToUse)
-
-    sizeDiffrence = len(colorsToUse) - len(selectedIndexes)
-    if(sizeDiffrence < 0):
-        colorsToUse.append(colorsToUse[0:(sizeDiffrence + 1)])
-    elif(sizeDiffrence > 0):
-        colorsToUse = colorsToUse[0:(len(colorsToUse - sizeDiffrence + 1))]
-    random.shuffle(colorsToUse)
-    print(colorsToUse)
+    colorToUse = random.choice(colors)
 
 
-    df = pd.DataFrame({title: data}, index=selectedIndexes, color = colorsToUse)
-    fig = df.plot.bar(rot=0)
+    df = pd.DataFrame({title: data}, index=selectedIndexes)
+    fig = df.plot.bar(rot=0, color = colorToUse)
     fig.figure.savefig("myplot.png")
 
     im = Image.open(r"myplot.png") 
